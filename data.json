@@ -1,0 +1,10 @@
+{
+    "amazon.com": {
+        "email": "amazon@gmail.com",
+        "password": "amazon1234567"
+    },
+    "udemy.com": {
+        "email": "udemy@gmail.com",
+        "password": "udemyhahah"
+    }
+}
