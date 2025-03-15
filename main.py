@@ -9,17 +9,19 @@ import json
 class loginWindow(Tk):
     def __init__(self):
         Tk.__init__(self)
-        self.title("بٶ چونا ژور ناڤ و ژمارا نهێنی تۆمار بکە")
+        self.title("To login, enter name and password")
         self.config(padx=50, pady=50, width=500, height=350, bg="#282120")
+        self.resizable(False, False)
+
 
         self.canvas = Canvas(self, width=200, height=200, bg="#282120", highlightthickness=0)
         self.logo_image = PhotoImage(file="logo.png")
         self.canvas.create_image(100, 100, image=self.logo_image)
         self.canvas.grid(column=1, row=0)
 
-        self.username_check_label = Label(self, text="ناڤ:", bg="#282120", fg="#D4483B")
+        self.username_check_label = Label(self, text="Name:", bg="#282120", fg="#D4483B")
         self.username_check_label.grid(column=0, row=2)
-        self.password_check_label = Label(self, text="ژمارا نهێنی:", bg="#282120", fg="#D4483B")
+        self.password_check_label = Label(self, text="Password:", bg="#282120", fg="#D4483B")
         self.password_check_label.grid(column=0, row=3)
         self.space1 = Label(self, text=" ", bg="#282120")
         self.space1.grid(column=1, row=1)
@@ -31,7 +33,7 @@ class loginWindow(Tk):
         self.password_check_input.grid(column=1, row=3)
         self.space2 = Label(self, text=" ", bg="#282120")
         self.space2.grid(column=0, row=4)
-        self.enter_button = Button(self, text="کلیک بکە", width=7, bg="#282120", fg="#D4483B", command=self.validate)
+        self.enter_button = Button(self, text="Login", width=7, bg="#282120", fg="#D4483B", command=self.validate)
         self.enter_button.grid(column=1, row=5, columnspan=2)
 
     def validate(self):
@@ -42,7 +44,7 @@ class loginWindow(Tk):
             global load_manager
             load_manager()
         else:
-            messagebox.showwarning(title="Error", message="!ببورە! ناڤ یان پاسوۆرد دخەلەتن")
+            messagebox.showwarning(title="Error", message="Incorrect name and/or password!")
             self.username_check_input.delete(0, END)
             self.password_check_input.delete(0, END)
 
@@ -62,8 +64,10 @@ class ManagerWindow(Tk):
 
     def __init__(self):
         Tk.__init__(self)
-        self.title("هەلگرێ ژمارێت نهێنی")
+        self.title("Password Manager")
         self.config(padx=50, pady=50, bg="#282120")
+        self.resizable(False, False)
+
 
         self.canvas = Canvas(self, width=200, height=200, bg="#282120", highlightthickness=0)
         self.logo_image = PhotoImage(file="logo.png")
@@ -71,11 +75,11 @@ class ManagerWindow(Tk):
         self.canvas.grid(column=1, row=0)
 
         # Labels
-        self.website_label = Label(self, text="وێب سایت:", bg="#282120", fg="#D4483B")
+        self.website_label = Label(self, text="Website:", bg="#282120", fg="#D4483B")
         self.website_label.grid(column=0, row=2)
-        self.email_label = Label(self, text="ئیمێل:", bg="#282120", fg="#D4483B")
+        self.email_label = Label(self, text="Email:", bg="#282120", fg="#D4483B")
         self.email_label.grid(column=0, row=3)
-        self.password_label = Label(self, text="ژمارا نهێنی:", bg="#282120", fg="#D4483B")
+        self.password_label = Label(self, text="Password:", bg="#282120", fg="#D4483B")
         self.password_label.grid(column=0, row=4)
         self.line_label1 = Label(self, text=" ", bg="#282120")
         self.line_label1.grid(column=1, row=1)
@@ -93,13 +97,13 @@ class ManagerWindow(Tk):
         self.password_input.grid(column=1, row=4)
 
         # Buttons
-        self.generate_password_button = Button(self, text="پاسوۆردەکی چێکە", bg="#282120", fg="#D4483B", command=self.generate_password)
+        self.generate_password_button = Button(self, text="Generate a password", bg="#282120", fg="#D4483B", command=self.generate_password)
         self.generate_password_button.grid(column=2, row=4)
 
-        self.add_password = Button(self, text="زێدەکرن", width=45, bg="#282120", fg="#D4483B", command=self.save)
+        self.add_password = Button(self, text="Add", width=45, bg="#282120", fg="#D4483B", command=self.save)
         self.add_password.grid(column=1, row=6, columnspan=2)
 
-        self.search = Button(self, text="لێگەڕیان", width=14, bg="#282120", fg="#D4483B", command=self.find_password)
+        self.search = Button(self, text="Search", width=14, bg="#282120", fg="#D4483B", command=self.find_password)
         self.search.grid(column=2, row=2)
 
     def generate_password(self):
@@ -144,7 +148,7 @@ class ManagerWindow(Tk):
                     }
 
         if len(website) == 0 or len(email) == 0 or len(password) == 0:
-            messagebox.showinfo(title="Oops", message="!بێ زەحمەت چ بۆشاییا نەهێلە خالی")
+            messagebox.showinfo(title="Oops", message="Please fill all the fields!")
 
         else:
             try:
@@ -176,7 +180,7 @@ class ManagerWindow(Tk):
                 data = json.load(file)
 
         except FileNotFoundError:
-            messagebox.showinfo(title="Error", message="!پێزانینێت فایلی نەهاتنە دیتن")
+            messagebox.showinfo(title="Error", message="Not found!")
 
         else:
             if website in data:
@@ -184,7 +188,7 @@ class ManagerWindow(Tk):
                 password = data[website]["password"]
                 messagebox.showinfo(title=website,message=f"Email: {email}\n\nPassword: {password}")
             else:
-                messagebox.showinfo(title="Error", message=f"  نەهاتنە دیتن{website}!پێزانێن بۆ:  ")
+                messagebox.showinfo(title="Error", message=f"  Password for {website} not found:  ")
 
 
 app = loginWindow()
